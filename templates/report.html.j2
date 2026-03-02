@@ -21,9 +21,14 @@
         </div>
         <div class="cover-for">for {{ business_name }}</div>
         <p class="cover-subtitle">
+            {% if suburb_prospect and suburb_prospect.maps_top_3 %}
+            You're already showing up in {{ suburb }}. Here's <em>what's
+            keeping you from dominating the area.</em>
+            {% else %}
             Find out <em>why your competitors in {{ suburb }} are getting
             all the calls,</em> and how you can take those back by out
             ranking them.
+            {% endif %}
         </p>
     </div>
     <img src="logo.png" class="page-logo" alt="PlumbElec Marketing">
