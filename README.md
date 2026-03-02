@@ -197,7 +197,7 @@ GHL captures contact (with custom fields: trade_type, suburb, lga)
         │
         ▼
 GHL Workflow triggers Outbound Webhook
-  POST https://your-server.com/generate-report
+  POST https://competitor-spy-report-production.up.railway.app/generate-report
   Body: { contact_id, trade_type, business_name, suburb, lga, ... }
         │
         ▼
@@ -264,7 +264,7 @@ Add to `.env` as `GHL_LOCATION_ID`.
 
 - **Trigger:** Facebook Lead Ad form submission
 - **Action:** Custom Webhook (POST)
-- **URL:** `https://your-server.com/generate-report`
+- **URL:** `https://competitor-spy-report-production.up.railway.app/generate-report`
 - **Headers:** `Authorization: Bearer {WEBHOOK_SECRET}`, `Content-Type: application/json`
 - **Body mapping:**
 
@@ -433,15 +433,19 @@ Renders a PDF with hardcoded mock data to `output/`. Useful for testing template
 
 ## Deployment (Railway)
 
-1. Push to a Git repo
-2. Connect the repo in Railway
-3. Add all environment variables in the Railway dashboard
-4. Deploy — Railway uses the Dockerfile
+**Production URL:** `https://competitor-spy-report-production.up.railway.app`
+
+The app is deployed on Railway from the `pelmark/competitor-spy-report` GitHub repo.
+
+1. Push to `main` — Railway auto-deploys
+2. Environment variables are configured in the Railway dashboard
+3. Railway builds from the Dockerfile
 
 The `railway.json` configures:
 - Dockerfile-based build
-- Start command: `gunicorn --bind 0.0.0.0:$PORT --timeout 120 main:app`
 - Auto-restart on failure (max 10 retries)
+
+The Dockerfile runs: `gunicorn --bind 0.0.0.0:$PORT --timeout 120 main:app`
 
 The `--timeout 120` is important — a full report pipeline takes 30-90 seconds due to sequential DataForSEO API calls with rate-limiting delays.
 
