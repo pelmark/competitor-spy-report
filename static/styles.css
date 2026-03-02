@@ -1,0 +1,569 @@
+/* ==========================================================================
+   Competitor Spy Report — PDF Stylesheet
+   WeasyPrint-compatible. Avoid flexbox for paginated content.
+   ========================================================================== */
+
+/* --- Fonts --- */
+@font-face {
+    font-family: 'Syne';
+    src: url('fonts/Syne-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('fonts/Inter-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* --- Page Setup --- */
+@page {
+    size: A4 landscape;
+    margin: 0;
+}
+
+/* --- Base --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    color: #333333;
+    font-size: 11pt;
+    line-height: 1.5;
+}
+
+/* --- Page Container --- */
+.page {
+    width: 297mm;
+    height: 210mm;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+}
+
+.page:last-child {
+    page-break-after: auto;
+}
+
+/* Inner content area with padding */
+.page-content {
+    padding: 18mm 25mm 22mm 25mm;
+    position: relative;
+    height: 100%;
+}
+
+/* --- Page Header Bar (black) --- */
+.page-header {
+    background: #000000;
+    color: #FFFFFF;
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 20pt;
+    padding: 10mm 25mm;
+    margin: 0;
+    width: 100%;
+}
+
+/* Content area below header */
+.page-header + .page-body {
+    padding: 12mm 25mm 22mm 25mm;
+}
+
+.page-body {
+    padding: 12mm 25mm 22mm 25mm;
+    position: relative;
+}
+
+/* --- Logo (bottom-right every page) --- */
+.page-logo {
+    position: absolute;
+    bottom: 5mm;
+    right: 5mm;
+    width: 42mm;
+    height: auto;
+}
+
+/* ==========================================================================
+   PAGE 1: Cover
+   ========================================================================== */
+
+.cover {
+    background: #FFFFFF;
+}
+
+.cover-left {
+    float: left;
+    width: 45%;
+    padding: 100px 0 0 20mm;
+    text-align: center;
+}
+
+.cover-right {
+    float: right;
+    width: 52%;
+    padding: 200px 25mm 0 10mm;
+}
+
+.phone-mockup {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 150mm;
+    height: auto;
+}
+
+.cover-title {
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 36pt;
+    color: #000000;
+    margin-bottom: 6mm;
+    line-height: 1.15;
+}
+
+.cover-title .teal {
+    color: #0CC3C9;
+}
+
+.cover-for {
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 14pt;
+    color: #000000;
+    margin-bottom: 6mm;
+}
+
+.cover-subtitle {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 13pt;
+    color: #555555;
+    line-height: 1.6;
+}
+
+.cover-subtitle em {
+    font-style: italic;
+    font-weight: 300;
+}
+
+.cover .page-logo {
+    bottom: 5mm;
+    right: 5mm;
+}
+
+/* ==========================================================================
+   PAGE 2: The Problem
+   ========================================================================== */
+
+.problem-body {
+    position: relative;
+}
+
+.score-badge {
+    position: absolute;
+    top: 4mm;
+    right: 6mm;
+    background: #0CC3C9;
+    color: #FFFFFF;
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 28pt;
+    padding: 6mm 8mm 3mm 8mm;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 1;
+}
+
+.score-label {
+    display: block;
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 7pt;
+    color: #FFFFFF;
+    margin-top: 2.5mm;
+    letter-spacing: 0.3pt;
+}
+
+.score-explanation {
+    font-size: 11pt;
+    color: #555555;
+    margin-bottom: 5mm;
+    max-width: 70%;
+}
+
+.pattern-interrupt {
+    font-size: 12pt;
+    color: #000000;
+    font-weight: 300;
+    margin-bottom: 6mm;
+    line-height: 1.5;
+    max-width: 75%;
+}
+
+.section-subheading {
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 12pt;
+    color: #000000;
+    margin-top: 4mm;
+    margin-bottom: 3mm;
+}
+
+.analysis-bullets {
+    list-style-type: disc;
+    padding-left: 6mm;
+    margin-bottom: 4mm;
+}
+
+.analysis-bullets li {
+    font-size: 10.5pt;
+    color: #333333;
+    line-height: 1.45;
+    margin-bottom: 2mm;
+    max-width: 80%;
+}
+
+/* ==========================================================================
+   PAGE 3: Competitor Tables
+   ========================================================================== */
+
+.tables-body {
+    padding-top: 6mm;
+}
+
+.table-level-heading {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 11pt;
+    color: #333333;
+    margin-bottom: 3mm;
+    margin-top: 5mm;
+}
+
+.table-level-heading:first-child {
+    margin-top: 0;
+}
+
+.competitor-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.5pt;
+    margin-bottom: 4mm;
+}
+
+.competitor-table thead th {
+    background: #1B2A4A;
+    color: #FFFFFF;
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 7pt;
+    padding: 2.5mm 2mm;
+    text-align: center;
+    border: none;
+}
+
+.competitor-table thead th:first-child {
+    text-align: left;
+    padding-left: 3mm;
+}
+
+.competitor-table tbody td {
+    padding: 2mm 2mm;
+    text-align: center;
+    border-bottom: 0.5px solid #E2E8F0;
+    font-size: 7.5pt;
+    color: #333333;
+}
+
+.competitor-table tbody td:first-child {
+    text-align: left;
+    padding-left: 3mm;
+    font-weight: 300;
+}
+
+.competitor-table tbody tr:nth-child(even) {
+    background: #F7FAFC;
+}
+
+.competitor-table tbody tr.prospect-row {
+    background: #E6F0FA;
+}
+
+.competitor-table tbody tr.prospect-row td:first-child {
+    font-weight: 600;
+}
+
+.tick {
+    color: #38A169;
+    font-weight: 600;
+}
+
+.cross {
+    color: #E53E3E;
+    font-weight: 600;
+}
+
+.keyword-stuffed-note {
+    font-size: 7pt;
+    color: #A0AEC0;
+    font-style: italic;
+    margin-top: 1mm;
+}
+
+/* ==========================================================================
+   PAGE 4: What's This Costing You
+   ========================================================================== */
+
+.costing-headline {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 14pt;
+    color: #000000;
+    margin-bottom: 6mm;
+}
+
+.costing-headline strong {
+    font-weight: 600;
+}
+
+.costing-headline .highlight {
+    font-weight: 600;
+    font-style: italic;
+}
+
+.search-framing {
+    font-size: 11pt;
+    color: #333333;
+    line-height: 1.6;
+    margin-bottom: 6mm;
+    max-width: 85%;
+}
+
+.keyword-breakdown {
+    margin-bottom: 6mm;
+}
+
+.keyword-breakdown-title {
+    font-size: 10pt;
+    color: #555555;
+    margin-bottom: 3mm;
+}
+
+.keyword-breakdown ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.keyword-breakdown li {
+    font-size: 10pt;
+    color: #333333;
+    margin-bottom: 1.5mm;
+    padding-left: 4mm;
+}
+
+.keyword-breakdown li::before {
+    content: "•";
+    margin-right: 2mm;
+    color: #0CC3C9;
+}
+
+.math-chain {
+    font-size: 11.5pt;
+    color: #000000;
+    line-height: 1.6;
+    margin-bottom: 6mm;
+    max-width: 85%;
+}
+
+.provocative-close {
+    font-size: 12pt;
+    color: #000000;
+    font-weight: 600;
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    margin-top: 4mm;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   PAGE 5: Here's What Needs to Happen
+   ========================================================================== */
+
+.action-item {
+    margin-bottom: 7mm;
+}
+
+.action-item-name {
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 12pt;
+    color: #000000;
+    margin-bottom: 1.5mm;
+}
+
+.action-item-explanation {
+    font-size: 11pt;
+    color: #333333;
+    line-height: 1.55;
+    max-width: 85%;
+}
+
+.closing-bridge {
+    font-size: 11pt;
+    color: #555555;
+    margin-top: 8mm;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   PAGE 6: Google Maps Best Practices
+   ========================================================================== */
+
+.best-practices-body {
+    padding-top: 8mm;
+    padding-bottom: 10mm;
+}
+
+.bp-intro {
+    font-size: 11pt;
+    color: #333333;
+    line-height: 1.5;
+    margin-bottom: 5mm;
+}
+
+.bp-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+}
+
+.bp-cell {
+    width: 48%;
+    vertical-align: top;
+    padding: 0;
+    border: none;
+}
+
+.bp-cell-left {
+    padding-right: 5mm;
+}
+
+.bp-cell-right {
+    padding-left: 5mm;
+}
+
+.bp-category {
+    margin-bottom: 3mm;
+}
+
+.bp-category-title {
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 12pt;
+    color: #000000;
+    margin-bottom: 2mm;
+}
+
+.bp-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.bp-list li {
+    font-size: 9.5pt;
+    color: #333333;
+    line-height: 1.4;
+    margin-bottom: 1.5mm;
+    padding-left: 3mm;
+    position: relative;
+}
+
+.bp-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #0CC3C9;
+}
+
+.bp-list li strong {
+    font-weight: 600;
+    color: #000000;
+}
+
+/* ==========================================================================
+   PAGE 7: CTA
+   ========================================================================== */
+
+.cta {
+    text-align: center;
+    background: #F5F5F5;
+}
+
+.cta-content {
+    padding: 30mm 35mm 20mm 35mm;
+    text-align: center;
+}
+
+.headshot {
+    display: block;
+    margin: 0 auto 8mm auto;
+    width: 80pt;
+    height: 80pt;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.cta-heading {
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 22pt;
+    color: #000000;
+    margin-bottom: 6mm;
+}
+
+.cta-body-text {
+    font-size: 11pt;
+    color: #555555;
+    line-height: 1.6;
+    margin-bottom: 10mm;
+    max-width: 420pt;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #0CC3C9;
+    color: #FFFFFF;
+    font-family: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 14pt;
+    padding: 5mm 16mm;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-bottom: 5mm;
+}
+
+.testimonials-link {
+    display: block;
+    font-size: 10pt;
+    color: #333333;
+    text-decoration: underline;
+    margin-bottom: 14mm;
+}
+
+.client-logos {
+    display: block;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 680pt;
+    height: auto;
+}

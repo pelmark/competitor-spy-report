@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Competitor Spy Report - {{ business_name }}</title>
+</head>
+<body>
+
+{# =====================================================================
+   PAGE 1: Cover
+   ===================================================================== #}
+<section class="page cover">
+    <div class="cover-left">
+        {% if has_phone_mockup %}
+        <img src="phone-mockup.png" class="phone-mockup" alt="Google search results showing Ads, Maps, and Organic sections">
+        {% endif %}
+    </div>
+    <div class="cover-right">
+        <div class="cover-title">
+            <span class="teal">Google Maps</span><br>Competitor Report
+        </div>
+        <div class="cover-for">for {{ business_name }}</div>
+        <p class="cover-subtitle">
+            Find out <em>why your competitors in {{ suburb }} are getting
+            all the calls,</em> and how you can take those back by out
+            ranking them.
+        </p>
+    </div>
+    <img src="logo.png" class="page-logo" alt="PlumbElec Marketing">
+</section>
+
+{# =====================================================================
+   PAGE 2: The Problem
+   ===================================================================== #}
+<section class="page">
+    <div class="page-header">The problem</div>
+    <div class="page-body problem-body">
+
+        {# Score badge -top right #}
+        {% if score %}
+        <div class="score-badge">{{ score }}/100<span class="score-label">Your Profile Score</span></div>
+        {% endif %}
+
+        {# Score explanation #}
+        {% if analysis and analysis.score_explanation %}
+        <p class="score-explanation">{{ analysis.score_explanation }}</p>
+        {% endif %}
+
+        {# Pattern interrupt #}
+        {% if analysis and analysis.pattern_interrupt %}
+        <p class="pattern-interrupt">{{ analysis.pattern_interrupt }}</p>
+        {% endif %}
+
+        {# What your competitors are doing right #}
+        {% if analysis and analysis.competitors_doing_right %}
+        <div class="section-subheading">What your competitors are doing right</div>
+        <ul class="analysis-bullets">
+            {% for bullet in analysis.competitors_doing_right %}
+            <li>{{ bullet }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {# Where you're falling behind #}
+        {% if analysis and analysis.falling_behind %}
+        <div class="section-subheading">Where you're falling behind</div>
+        <ul class="analysis-bullets">
+            {% for bullet in analysis.falling_behind %}
+            <li>{{ bullet }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </div>
+    <img src="logo.png" class="page-logo" alt="PlumbElec Marketing">
+</section>
+
+{# =====================================================================
+   PAGE 3: Your Profile vs Your Competitors
+   ===================================================================== #}
+<section class="page">
+    <div class="page-header">Your profile vs your competitors</div>
+    <div class="page-body tables-body">
+
+        {# Suburb table #}
+        <div class="table-level-heading">Suburb level analysis - {{ suburb }}, {{ state }}</div>
+
+        <table class="competitor-table">
+            <thead>
+                <tr>
+                    <th>Business Name</th>
+                    <th>Maps<br>Top 3</th>
+                    <th>Organic<br>Top 10</th>
+                    <th>Website</th>
+                    <th>Address<br>Type</th>
+                    <th>Primary<br>Category</th>
+                    <th>Stars</th>
+                    <th>Reviews</th>
+                    <th>Photos</th>
+                    <th>Desc.</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# Prospect row first #}
+                {% if suburb_prospect %}
+                <tr class="prospect-row">
+                    <td>{{ suburb_prospect.business_name }}{% if suburb_prospect.keyword_stuffed %} *{% endif %}</td>
+                    <td>{% if suburb_prospect.maps_top_3 %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{% if suburb_prospect.organic_top_10 %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{% if suburb_prospect.has_website %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{{ suburb_prospect.address_type|upper if suburb_prospect.address_type|lower == 'sab' else suburb_prospect.address_type|title }}</td>
+                    <td>{{ suburb_prospect.primary_category or '-' }}</td>
+                    <td>{{ suburb_prospect.star_rating }}</td>
+                    <td>{{ suburb_prospect.review_count }}</td>
+                    <td>{{ suburb_prospect.photo_count }}</td>
+                    <td>{% if suburb_prospect.has_description %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                </tr>
+                {% endif %}
+                {# Competitor rows #}
+                {% for comp in suburb_competitors %}
+                {% if not comp.is_prospect %}
+                <tr>
+                    <td>{{ comp.business_name }}{% if comp.keyword_stuffed %} *{% endif %}</td>
+                    <td>{% if comp.maps_top_3 %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{% if comp.organic_top_10 %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{% if comp.has_website %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{{ comp.address_type|upper if comp.address_type|lower == 'sab' else comp.address_type|title }}</td>
+                    <td>{{ comp.primary_category or '-' }}</td>
+                    <td>{{ comp.star_rating }}</td>
+                    <td>{{ comp.review_count }}</td>
+                    <td>{{ comp.photo_count }}</td>
+                    <td>{% if comp.has_description %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if suburb_has_stuffed %}
+        <p class="keyword-stuffed-note">* Business name may violate Google's keyword-stuffing policy.</p>
+        {% endif %}
+
+        {# LGA table #}
+        <div class="table-level-heading">LGA level analysis - {{ lga }}, {{ state }}</div>
+
+        <table class="competitor-table">
+            <thead>
+                <tr>
+                    <th>Business Name</th>
+                    <th>Maps<br>Top 3</th>
+                    <th>Organic<br>Top 10</th>
+                    <th>Website</th>
+                    <th>Address<br>Type</th>
+                    <th>Primary<br>Category</th>
+                    <th>Stars</th>
+                    <th>Reviews</th>
+                    <th>Photos</th>
+                    <th>Desc.</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# Prospect row first #}
+                {% if lga_prospect %}
+                <tr class="prospect-row">
+                    <td>{{ lga_prospect.business_name }}{% if lga_prospect.keyword_stuffed %} *{% endif %}</td>
+                    <td>{% if lga_prospect.maps_top_3 %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{% if lga_prospect.organic_top_10 %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{% if lga_prospect.has_website %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{{ lga_prospect.address_type|upper if lga_prospect.address_type|lower == 'sab' else lga_prospect.address_type|title }}</td>
+                    <td>{{ lga_prospect.primary_category or '-' }}</td>
+                    <td>{{ lga_prospect.star_rating }}</td>
+                    <td>{{ lga_prospect.review_count }}</td>
+                    <td>{{ lga_prospect.photo_count }}</td>
+                    <td>{% if lga_prospect.has_description %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                </tr>
+                {% endif %}
+                {# Competitor rows #}
+                {% for comp in lga_competitors %}
+                {% if not comp.is_prospect %}
+                <tr>
+                    <td>{{ comp.business_name }}{% if comp.keyword_stuffed %} *{% endif %}</td>
+                    <td>{% if comp.maps_top_3 %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{% if comp.organic_top_10 %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{% if comp.has_website %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                    <td>{{ comp.address_type|upper if comp.address_type|lower == 'sab' else comp.address_type|title }}</td>
+                    <td>{{ comp.primary_category or '-' }}</td>
+                    <td>{{ comp.star_rating }}</td>
+                    <td>{{ comp.review_count }}</td>
+                    <td>{{ comp.photo_count }}</td>
+                    <td>{% if comp.has_description %}<span class="tick">&#10004;</span>{% else %}<span class="cross">&#10008;</span>{% endif %}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if lga_has_stuffed %}
+        <p class="keyword-stuffed-note">* Business name may violate Google's keyword-stuffing policy.</p>
+        {% endif %}
+
+    </div>
+</section>
+
+{# =====================================================================
+   PAGE 4: What's This Costing You
+   ===================================================================== #}
+<section class="page">
+    <div class="page-header">What's this costing you</div>
+    <div class="page-body">
+
+        <p class="costing-headline">
+            You're potentially missing out on <strong>{{ potential_leads }} enquiries</strong> or more
+        </p>
+
+        {# Search framing #}
+        {% if analysis and analysis.search_framing %}
+        <p class="search-framing">{{ analysis.search_framing }}</p>
+        {% endif %}
+
+        {# Keyword breakdown #}
+        {% if keyword_volumes %}
+        <div class="keyword-breakdown">
+            <p class="keyword-breakdown-title">Here's where those {{ "{:,}".format(total_search_volume) }} searches are coming from:</p>
+            <ul>
+                {% for kv in keyword_volumes %}
+                <li><strong>{{ kv.keyword }}</strong> - {{ "{:,}".format(kv.search_volume) }}/mo</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {# Math chain #}
+        {% if analysis and analysis.math_chain %}
+        <p class="math-chain">{{ analysis.math_chain }}</p>
+        {% endif %}
+
+        {# Provocative close #}
+        {% if analysis and analysis.provocative_close %}
+        <p class="provocative-close">{{ analysis.provocative_close }}</p>
+        {% endif %}
+
+    </div>
+    <img src="logo.png" class="page-logo" alt="PlumbElec Marketing">
+</section>
+
+{# =====================================================================
+   PAGE 5: Here's What Needs to Happen
+   ===================================================================== #}
+<section class="page">
+    <div class="page-header">Some quick fixes to match the competition</div>
+    <div class="page-body">
+
+        {% if analysis and analysis.action_items %}
+        {% for item in analysis.action_items %}
+        <div class="action-item">
+            <div class="action-item-name">{{ item.name }}</div>
+            <p class="action-item-explanation">{{ item.explanation }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if analysis and analysis.closing_bridge %}
+        <p class="closing-bridge">{{ analysis.closing_bridge }}</p>
+        {% endif %}
+
+    </div>
+    <img src="logo.png" class="page-logo" alt="PlumbElec Marketing">
+</section>
+
+{# =====================================================================
+   PAGE 6: Google Maps Best Practices
+   ===================================================================== #}
+<section class="page">
+    <div class="page-header">Google Maps best practices</div>
+    <div class="page-body best-practices-body">
+
+        <p class="bp-intro">Here's exactly what the top-ranking businesses in your area are doing. Follow this checklist and you'll be competing for the #1 spot.</p>
+
+        <table class="bp-table">
+            <tr>
+                <td class="bp-cell bp-cell-left">
+
+                    <div class="bp-category">
+                        <div class="bp-category-title">Profile Setup</div>
+                        <ul class="bp-list">
+                            <li><strong>Primary category:</strong> Match the category used by the top 3 profiles for your main keyword - this alone can double your calls</li>
+                            <li><strong>Verified address:</strong> Get a physical address on your profile - ranking without one is nearly impossible</li>
+                            <li><strong>Business description:</strong> Use close to the 750 character limit with your services and areas mentioned naturally</li>
+                            <li><strong>Products section:</strong> List your services here - most competitors leave it completely blank</li>
+                        </ul>
+                    </div>
+
+                    <div class="bp-category">
+                        <div class="bp-category-title">Reviews</div>
+                        <ul class="bp-list">
+                            <li><strong>Outpace competitors:</strong> Aim for more reviews than every other business in your area</li>
+                            <li><strong>Quality over quantity:</strong> Push for detailed reviews with keywords and photos - "best electrician in Neutral Bay" beats "great job"</li>
+                            <li><strong>Ramp up gradually:</strong> Start at 1 per day, increase as your count grows - too many too fast looks suspicious</li>
+                            <li><strong>Local reviews matter more:</strong> Reviews from nearby customers and local guides carry extra weight</li>
+                            <li><strong>Reply to every review:</strong> Mention your service and suburb naturally in every response</li>
+                        </ul>
+                    </div>
+
+                </td>
+                <td class="bp-cell bp-cell-right">
+
+                    <div class="bp-category">
+                        <div class="bp-category-title">Weekly Activity</div>
+                        <ul class="bp-list">
+                            <li><strong>Post updates:</strong> Share a job update every week with your service and suburb - "Just finished a switchboard upgrade in Neutral Bay"</li>
+                            <li><strong>Upload real photos:</strong> Post photos and videos from actual jobs - Google wants proof your business is active</li>
+                            <li><strong>Self-serve Q&A:</strong> Ask and answer common customer questions on your own profile with keywords baked in</li>
+                        </ul>
+                    </div>
+
+                    <div class="bp-category">
+                        <div class="bp-category-title">Citations &amp; Consistency</div>
+                        <ul class="bp-list">
+                            <li><strong>Matching details everywhere:</strong> Your business name, address, and phone number must be identical across every listing - Google, Yelp, Apple Maps, Facebook, all of them</li>
+                        </ul>
+                    </div>
+
+                    <div class="bp-category">
+                        <div class="bp-category-title">Growth</div>
+                        <ul class="bp-list">
+                            <li><strong>Multiple locations:</strong> If budget allows, open a GBP in each area of your city with a real office - this can multiply your lead flow dramatically</li>
+                        </ul>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <img src="logo.png" class="page-logo" alt="PlumbElec Marketing">
+</section>
+
+{# =====================================================================
+   PAGE 7: CTA
+   ===================================================================== #}
+<section class="page cta">
+    <div class="cta-content">
+
+        {% if has_headshot %}
+        <img src="headshot.png" class="headshot" alt="Book a call">
+        {% endif %}
+
+        <div class="cta-heading">Book a free 15-minute call</div>
+
+        <p class="cta-body-text">
+            We'll walk through your report, show you exactly what's holding you back,
+            and give you a clear action plan to get more enquiries - whether you work
+            with us or not.
+        </p>
+
+        <a href="https://go.plumbelecmarketing.com/schedule" class="cta-button">Schedule Strategy Call</a>
+
+        <a href="https://plumbelecmarketing.com/testimonials/" class="testimonials-link">View testimonials</a>
+
+        {% if has_client_logos %}
+        <img src="client-logos.png" class="client-logos" alt="Our clients">
+        {% endif %}
+
+    </div>
+</section>
+
+</body>
+</html>
